@@ -105,17 +105,10 @@
             transform: translateY(1px);
         }
 
-        #downloadLink, #audioPlayer {
-            display: none;
-            margin-top: 15px;
-            color: #ff6200;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        audio {
+        #audioPlayer {
             width: 100%;
             margin-top: 10px;
+            display: none; /* Esconde inicialmente */
         }
 
         #loading {
@@ -181,8 +174,8 @@
         async function synthesizeText() {
             const text = document.getElementById("textInput").value;
             const selectedVoice = document.getElementById("voiceSelect").value;
-            const apiKey = "6482a7e3f96b4183885eb56be25a27f4"; // Insira sua chave da API Azure aqui
-            const region = "eastus"; // Insira a região da Azure aqui (por exemplo, "eastus")
+            const apiKey = "SUA_CHAVE_API_AZURE"; // Insira sua chave da API Azure aqui
+            const region = "SUA_REGIAO_AZURE"; // Insira a região da Azure aqui (por exemplo, "eastus")
 
             if (!text) {
                 alert("Por favor, insira algum texto.");
@@ -229,7 +222,7 @@
                 const downloadLink = document.getElementById("downloadLink");
                 downloadLink.href = audioUrl;
                 downloadLink.style.display = "inline";
-                downloadLink.textContent = "Clique para Baixar Áudio";
+                downloadLink.download = 'audio.mp3'; // Força o download como um arquivo mp3
 
             } catch (error) {
                 alert("Ocorreu um erro ao gerar o áudio: " + error.message);
