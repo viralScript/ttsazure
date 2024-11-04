@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Texto para Fala</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos Globais */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .highlight {
+            color: #ff6200;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .text-area {
+            flex: 1;
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #ff6200;
+        }
+
+        .options {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        select, button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, button:focus {
+            outline: none;
+            border-color: #ff6200;
+        }
+
+        button {
+            background-color: #ff6200;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #e55900;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        #downloadLink, #audioPlayer {
+            display: none;
+            margin-top: 15px;
+            color: #ff6200;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        #loading {
+            display: none;
+            font-size: 1em;
+            color: #ff6200;
+            margin-top: 15px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            button, textarea, select {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="highlight">Conversor de Texto para Fala</h1>
+        <div class="text-area">
+            <textarea id="textInput" placeholder="Digite seu texto aqui"></textarea>
+        </div>
+        <div class="options">
+            <label for="voiceSelect">Escolha um idioma</label>
+            <select id="voiceSelect">
+                <optgroup label="Português (Brasil)">
+                    <option value="pt-BR-FranciscaNeural">Francisca (Feminino)</option>
+                    <option value="pt-BR-AntonioNeural">Antonio (Masculino)</option>
+                    <option value="pt-BR-BrendaNeural">Brenda (Feminino)</option>
+                    <option value="pt-BR-DonatoNeural">Donato (Masculino)</option>
+                    <option value="pt-BR-GiovannaNeural">Giovanna (Feminino)</option>
+                    <option value="pt-BR-ElzaNeural">Elza (Feminino)</option>
+                    <option value="pt-BR-HumbertoNeural">Humberto (Masculino)</option>
+                    <option value="pt-BR-YaraNeural">Yara (Feminino)</option>
+                    <option value="pt-BR-LiaNeural">Lia (Feminino, Neural)</option>
+                </optgroup>
+            </select>
+        </div>
+        <button onclick="synthesizeText()">Gerar e Ouvir Áudio</button>
+        <div id="loading">Gerando áudio, por favor aguarde...</div>
+        <audio id="audioPlayer" controls></audio>
+        <a id="downloadLink" download="audio.mp3">Clique para Baixar Áudio</a>
+        <p class="footer">Powered by Azure TTS API</p>
+    </div>
+
+    <script>
+        async function synthesizeText() {
+            const text = document.getElementById("textInput").value;
+            const selectedVoice = document.getElementById("voiceSelect").value;
+            const apiKey = "6482a7e3f96b4183885eb56be25a27f4"; // Insira sua chave da API Azure aqui
+            const region = "eastus"; // Insira a região da Azure aqui (por exemplo, "eastus")
+
+            if (!text) {
+                alert("Por favor, insira algum texto.");
+                return;
+            }
+
+            const url = `https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`;
+            const headers = {
+                "Ocp-Apim-Subscription-Key": apiKey,
+                "Content-Type": "application/ssml+xml",
+                "X-Microsoft-OutputFormat": "audio-16khz-32kbitrate-mono-mp3",
+            };
+
+            const ssml = `
+                <speak version='1.0' xml:lang='pt-BR'>
+                    <voice xml:lang='pt-BR' xml:gender='Female' name='${selectedVoice}'>
+                        ${text}
+                    </voice>
+                </speak>
+            `;
+
+            document.getElementById("loading").style.display = "block"; // Mostra o indicador de carregamento
+
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: headers,
+                    body: ssml
+                });
+
+                if (!response.ok) {
+                    throw new Error("Erro na síntese de fala.");
+                }
+
+                const blob = await response.blob();
+                const audioUrl = URL.createObjectURL(blob);
+                
+                // Configura o player de áudio para reproduzir o áudio gerado
+                const audioPlayer = document.getElementById("audioPlayer");
+                audioPlayer.src = audioUrl;
+                audioPlayer.style.display = "block";
+                
+                // Configura o link de download
+                const downloadLink = document.getElementById("downloadLink");
+                downloadLink.href = audioUrl;
+                downloadLink.style.display = "inline";
+                downloadLink.textContent = "Clique para Baixar Áudio";
+
+            } catch (error) {
+                alert("Ocorreu um erro ao gerar o áudio: " + error.message);
+            } finally {
+                document.getElementById("loading").style.display = "none"; // Oculta o indicador de carregamento
+            }
+        }
+    </script>
+</body>
+</html>
