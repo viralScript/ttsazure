@@ -15,27 +15,27 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f9f9f9;
+            background: url('https://example.com/path-to-your-image.png') no-repeat center center fixed; /* Substitua pela URL da imagem que você deseja usar */
+            background-size: cover;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            color: #333;
+            color: #fff; /* Texto branco para melhor contraste */
             padding: 20px;
         }
 
         .container {
-            background-color: #fff;
+            background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro com transparência */
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             max-width: 500px;
             width: 100%;
             text-align: center;
         }
 
         h1 {
-            color: #333;
             margin-bottom: 20px;
             font-size: 2.5em;
             font-weight: 700;
@@ -60,6 +60,8 @@
             border: 1px solid #ddd;
             font-size: 1em;
             transition: border-color 0.3s;
+            background-color: rgba(255, 255, 255, 0.1); /* Fundo leve */
+            color: #fff; /* Texto branco */
         }
 
         textarea:focus {
@@ -79,7 +81,12 @@
             border-radius: 8px;
             border: 1px solid #ddd;
             font-size: 1em;
-            transition: border-color 0.3s;
+            transition: all 0.3s; /* Transição suave para hover */
+        }
+
+        select {
+            background-color: rgba(255, 255, 255, 0.1); /* Fundo leve */
+            color: #fff; /* Texto branco */
         }
 
         select:focus, button:focus {
@@ -121,7 +128,7 @@
         .footer {
             margin-top: 20px;
             font-size: 0.85em;
-            color: #666;
+            color: #ddd; /* Texto mais claro para melhor visibilidade */
         }
 
         /* Responsividade */
@@ -132,11 +139,6 @@
 
             .container {
                 padding: 20px;
-            }
-
-            button, textarea, select {
-                padding: 10px;
-                font-size: 0.9em;
             }
         }
     </style>
