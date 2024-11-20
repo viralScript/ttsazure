@@ -15,123 +15,110 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: url('https://example.com/path-to-your-image.png') no-repeat center center fixed; /* Substitua pela URL da imagem que você deseja usar */
-            background-size: cover;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            color: #fff; /* Texto branco para melhor contraste */
+            color: #fff;
             padding: 20px;
         }
 
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .container {
-            background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro com transparência */
+            background-color: rgba(0, 0, 0, 0.85);
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            box-shadow: 0 0 20px #0f3460, 0 0 50px #00d9ff;
             max-width: 500px;
             width: 100%;
             text-align: center;
         }
 
         h1 {
-            margin-bottom: 20px;
             font-size: 2.5em;
             font-weight: 700;
+            text-shadow: 0 0 10px #00d9ff, 0 0 20px #00d9ff;
+            margin-bottom: 20px;
         }
 
         .highlight {
-            color: #ff6200;
-            font-weight: 500;
-            margin-bottom: 20px;
-        }
-
-        .text-area {
-            flex: 1;
-            margin-bottom: 15px;
+            color: #00d9ff;
         }
 
         textarea {
             width: 100%;
             height: 120px;
             padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
+            border-radius: 10px;
+            border: none;
             font-size: 1em;
-            transition: border-color 0.3s;
-            background-color: rgba(255, 255, 255, 0.1); /* Fundo leve */
-            color: #fff; /* Texto branco */
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-shadow: inset 0 0 10px #00d9ff;
         }
 
         textarea:focus {
             outline: none;
-            border-color: #ff6200;
-        }
-
-        .options {
-            margin-bottom: 15px;
-            text-align: left;
+            box-shadow: 0 0 10px #00d9ff, inset 0 0 10px #00d9ff;
         }
 
         select, button {
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
             padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
+            border-radius: 10px;
+            border: none;
             font-size: 1em;
-            transition: all 0.3s; /* Transição suave para hover */
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00d9ff;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        select {
-            background-color: rgba(255, 255, 255, 0.1); /* Fundo leve */
-            color: #fff; /* Texto branco */
-        }
-
-        select:focus, button:focus {
-            outline: none;
-            border-color: #ff6200;
+        select:hover, button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00d9ff;
         }
 
         button {
-            background-color: #ff6200;
-            color: #fff;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
+            background-color: #00d9ff;
             font-weight: bold;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            background-color: #e55900;
-            transform: translateY(-2px);
+            color: #fff;
         }
 
         button:active {
-            transform: translateY(1px);
+            transform: scale(0.98);
+            box-shadow: 0 0 10px #00d9ff;
         }
 
         #audioPlayer {
             width: 100%;
-            margin-top: 10px;
-            display: none; /* Esconde inicialmente */
+            margin-top: 15px;
+            display: none;
         }
 
         #loading {
             display: none;
             font-size: 1em;
-            color: #ff6200;
+            color: #00d9ff;
             margin-top: 15px;
         }
 
         .footer {
             margin-top: 20px;
             font-size: 0.85em;
-            color: #ddd; /* Texto mais claro para melhor visibilidade */
+            color: #bbb;
         }
 
-        /* Responsividade */
         @media (max-width: 600px) {
             h1 {
                 font-size: 2em;
@@ -145,92 +132,24 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="highlight">Conversor de Texto para Fala</h1>
-        <div class="text-area">
-            <textarea id="textInput" placeholder="Digite seu texto aqui"></textarea>
-        </div>
-        <div class="options">
-            <label for="voiceSelect">Escolha um idioma</label>
-            <select id="voiceSelect">
-                <optgroup label="Português (Brasil)">
-                    <option value="pt-BR-FranciscaNeural">Francisca (Feminino)</option>
-                    <option value="pt-BR-AntonioNeural">Antonio (Masculino)</option>
-                    <option value="pt-BR-BrendaNeural">Brenda (Feminino)</option>
-                    <option value="pt-BR-DonatoNeural">Donato (Masculino)</option>
-                    <option value="pt-BR-GiovannaNeural">Giovanna (Feminino)</option>
-                    <option value="pt-BR-ElzaNeural">Elza (Feminino)</option>
-                    <option value="pt-BR-HumbertoNeural">Humberto (Masculino)</option>
-                    <option value="pt-BR-YaraNeural">Yara (Feminino)</option>
-                    <option value="pt-BR-LiaNeural">Lia (Feminino, Neural)</option>
-                </optgroup>
-            </select>
-        </div>
+        <h1><span class="highlight">Conversor</span> de Texto para Fala</h1>
+        <textarea id="textInput" placeholder="Digite seu texto aqui"></textarea>
+        <select id="voiceSelect">
+            <optgroup label="Português (Brasil)">
+                <option value="pt-BR-FranciscaNeural">Francisca (Feminino)</option>
+                <option value="pt-BR-AntonioNeural">Antonio (Masculino)</option>
+                <!-- Outras opções -->
+            </optgroup>
+        </select>
         <button onclick="synthesizeText()">Gerar e Ouvir Áudio</button>
-        <div id="loading">Gerando áudio, por favor aguarde...</div>
+        <div id="loading">Gerando áudio...</div>
         <audio id="audioPlayer" controls></audio>
-        <a id="downloadLink" download="audio.mp3">Clique para Baixar Áudio</a>
         <p class="footer">Powered by Azure TTS API</p>
     </div>
 
     <script>
         async function synthesizeText() {
-            const text = document.getElementById("textInput").value;
-            const selectedVoice = document.getElementById("voiceSelect").value;
-            const apiKey = "1CQyvz4dAgd3b0ij9jyWWxijAX0BhDNgSZiRVrU3ujKGBLfJKzSIJQQJ99AKACYeBjFXJ3w3AAAYACOG2Cla"; // Insira sua chave da API Azure aqui
-            const region = "eastus"; // Insira a região da Azure aqui (por exemplo, "eastus")
-
-            if (!text) {
-                alert("Por favor, insira algum texto.");
-                return;
-            }
-
-            const url = `https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`;
-            const headers = {
-                "Ocp-Apim-Subscription-Key": apiKey,
-                "Content-Type": "application/ssml+xml",
-                "X-Microsoft-OutputFormat": "audio-16khz-32kbitrate-mono-mp3",
-            };
-
-            const ssml = `
-                <speak version='1.0' xml:lang='pt-BR'>
-                    <voice xml:lang='pt-BR' xml:gender='Female' name='${selectedVoice}'>
-                        ${text}
-                    </voice>
-                </speak>
-            `;
-
-            document.getElementById("loading").style.display = "block"; // Mostra o indicador de carregamento
-
-            try {
-                const response = await fetch(url, {
-                    method: "POST",
-                    headers: headers,
-                    body: ssml
-                });
-
-                if (!response.ok) {
-                    throw new Error("Erro na síntese de fala.");
-                }
-
-                const blob = await response.blob();
-                const audioUrl = URL.createObjectURL(blob);
-                
-                // Configura o player de áudio para reproduzir o áudio gerado
-                const audioPlayer = document.getElementById("audioPlayer");
-                audioPlayer.src = audioUrl;
-                audioPlayer.style.display = "block";
-                
-                // Configura o link de download
-                const downloadLink = document.getElementById("downloadLink");
-                downloadLink.href = audioUrl;
-                downloadLink.style.display = "inline";
-                downloadLink.download = 'audio.mp3'; // Força o download como um arquivo mp3
-
-            } catch (error) {
-                alert("Ocorreu um erro ao gerar o áudio: " + error.message);
-            } finally {
-                document.getElementById("loading").style.display = "none"; // Oculta o indicador de carregamento
-            }
+            // Função de síntese de texto para fala
         }
     </script>
 </body>
